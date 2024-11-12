@@ -298,6 +298,49 @@ return {
     },
   },
 
+  -- nvim-tree
+  --
+{
+  "nvim-tree/nvim-tree.lua",
+  dependencies = "nvim-tree/nvim-web-devicons",
+  cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFile" }, -- Only load on these command
+  enabled = true,
+  opts = {
+    view = {
+      width = 35,
+      relativenumber = true,  -- Show relative numbers in the tree view
+    },
+    renderer = {
+      indent_markers = { -- Show indentation guides in the tree
+        enable = true,
+      },
+      icons = {
+        glyphs = { -- Custom folder icons
+          folder = {
+            arrow_closed = "",
+            arrow_open = "",
+          },
+        },
+      },
+    },
+    actions = { -- Disable window picker for more seamless file opening
+      open_file = {
+        window_picker = {
+          enable = false,
+        },
+      },
+    },
+    filters = { -- Exclude .DS_Store file from the tree view
+      custom = { ".DS_Store" },
+    },
+    git = {
+      ignore = false, -- Show git-ignored files
+    },
+  },
+  config = function(_, opts)
+    require("nvim-tree").setup(opts)
+  end,
+},
   -- [neotree]
   -- https://github.com/nvim-neo-tree/neo-tree.nvim
   {

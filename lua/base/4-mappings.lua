@@ -678,10 +678,20 @@ if is_available("yazi.nvim") and vim.fn.executable("yazi") == 1 then
   }
 end
 
--- neotree
-if is_available("neo-tree.nvim") then
-  maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "Neotree" }
+-- nvim-tree
+if is_available("nvim-tree.lua") then
+  maps.n["<C-e>"] = { "<cmd>NvimTreeFocus<CR>", desc = "Focus file explorer" } -- focus file explorer
+  maps.n["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", desc = "Toggle file explorer" } -- toggle file explorer
+	maps.n["<leader>ef"] = { "<cmd>NvimTreeFindFileToggle<CR>", desc = "Toggle file explorer on current file" } -- toggle file explorer on current file
+	maps.n["<leader>ec"] = { "<cmd>NvimTreeCollapse<CR>", desc = "Collapse file explorer" } -- collapse file explorer
+	maps.n["<leader>er"] = { "<cmd>NvimTreeRefresh<CR>", desc = "Refresh file explorer" } -- refresh file explorer
 end
+
+-- neotree
+-- if is_available("neo-tree.nvim") then
+--   maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "Neotree" }
+--   maps.n["<C-e>"] = { "<cmd>Neotree focus<cr>", desc = "Focus Neotree" }
+-- end
 
 -- session manager ---------------------------------------------------------
 if is_available("neovim-session-manager") then

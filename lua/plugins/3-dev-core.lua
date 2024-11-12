@@ -377,6 +377,7 @@ return {
         { path = "neovim-session-manager.nvim", mods = { "session_manager" } },
         { path = "nvim-spectre", mods = { "spectre" } },
         { path = "neo-tree.nvim", mods = { "neo-tree" } },
+        { path = "nvim-tree.nvim", mods = { "nvim-tree" } },
         { path = "nui.nvim", mods = { "nui" } },
         { path = "nvim-ufo", mods = { "ufo" } },
         { path = "promise-async", mods = { "promise-async" } },
