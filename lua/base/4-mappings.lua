@@ -1320,6 +1320,14 @@ if is_available("neural") or is_available("copilot") then
     function() require("neural").prompt() end,
     desc = "Ask chatgpt",
   }
+  maps.n["<leader>cpd"] = {
+    "<cmd>Copilot disable<cr>",
+    desc = "Copilot Disable",
+  }
+  maps.n["<leader>cpe"] = {
+    "<cmd>Copilot enable<cr>",
+    desc = "Copilot Enable",
+  }
 end
 
 -- hop.nvim ----------------------------------------------------------------

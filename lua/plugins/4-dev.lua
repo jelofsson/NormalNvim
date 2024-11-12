@@ -330,6 +330,59 @@ return {
     end,
   },
 
+  -- copilot [github code suggestions]
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = { "Copilot" },
+    opts = {
+      panel = {
+        enabled = true,
+        auto_refresh = true,
+        keymap = {
+          jump_prev = "[[",
+          jump_next = "]]",
+          accept = "<CR>",
+          refresh = "gr",
+          open = "<M-CR>",
+        },
+        layout = {
+          position = "bottom", -- | top | left | right
+          ratio = 0.4,
+        },
+      },
+      suggestion = {
+        enabled = true,
+        auto_trigger = true, -- Automatically show suggestions
+        debounce = 75, -- Debounce time for suggestions (in ms)
+        keymap = {
+          accept = "<C-a>",
+          accept_word = false,
+          accept_line = false,
+          next = "<C-n>",
+          prev = "<C-p>",
+          dismiss = "<C-x>",
+        },
+      },
+      filetypes = { ["*"] = true },
+    },
+    config = function(_, opts) require("copilot").setup(opts) end,
+  },
+
+  -- copilot [github copilot chat]
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    cmd = { "CopilotChat" },
+		branch = "canary",
+		dependencies = {
+			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+		},
+		opts = {
+			debug = true, -- Enable debugging
+			-- See Configuration section for rest
+		},
+  },
+
   --  copilot [github code suggestions]
   --  https://github.com/github/copilot.vim
   --  As alternative to chatgpt, you can use copilot uncommenting this.
