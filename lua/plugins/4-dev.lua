@@ -372,13 +372,15 @@ return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     cmd = { "CopilotChat" },
-		branch = "canary",
+		branch = "main",
 		dependencies = {
-			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+			{ "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", commit = "2d9b06177a975543726ce5c73fca176cedbffe9d" }, -- for curl, log wrapper
 		},
+		build = "make tiktoken", -- Only on MacOS or Linux
 		opts = {
-			debug = true, -- Enable debugging
+			debug = false, -- Enable debugging
+			allow_insecure = true,
 			-- See Configuration section for rest
 		},
   },
