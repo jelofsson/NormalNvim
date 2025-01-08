@@ -932,7 +932,7 @@ if is_available("telescope.nvim") then
     end,
     desc = "Find themes",
   }
-  maps.n["<leader>ff"] = {
+  maps.n["<leader>fs"] = {
     function()
       require("telescope.builtin").live_grep({
         additional_args = function(args)
