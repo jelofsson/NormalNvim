@@ -307,6 +307,7 @@ return {
   enabled = true,
   opts = {
     view = {
+      side = "left",
       width = 35,
       relativenumber = true,  -- Show relative numbers in the tree view
     },
@@ -325,6 +326,7 @@ return {
     },
     actions = { -- Disable window picker for more seamless file opening
       open_file = {
+        resize_window = false, -- disable resize tree-view after opened file
         window_picker = {
           enable = false,
         },
