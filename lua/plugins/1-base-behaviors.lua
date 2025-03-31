@@ -306,6 +306,9 @@ return {
   cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFile" }, -- Only load on these command
   enabled = true,
   opts = {
+    update_focused_file = {
+    enable = true
+    },
     view = {
       side = "left",
       width = 35,
