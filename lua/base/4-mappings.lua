@@ -928,7 +928,13 @@ if is_available("telescope.nvim") then
     function()
       require("telescope.builtin").live_grep({
         additional_args = function(args)
-          args.additional_args = { "--hidden", "--no-ignore" }
+          args.additional_args = {
+            "--hidden", "--no-ignore",
+            "--glob", "!.git/**",
+            "--glob", "!node_modules/**",
+            "--glob", "!.next/**",
+            "--glob", "!package-lock.json"
+          }
           return args.additional_args
         end,
       })
