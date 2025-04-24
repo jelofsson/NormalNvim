@@ -1400,6 +1400,18 @@ function M.lsp_mappings(client, bufnr)
       { function() require("telescope.builtin").diagnostics() end, desc = "Diagnostics" }
   end
 
+  -- Toggle LSP diagnostics visibility
+  local isLspDiagnosticsVisible = true
+  lsp_mappings.n["<leader>lx"] = {
+    function()
+      isLspDiagnosticsVisible = not isLspDiagnosticsVisible
+      vim.diagnostic.config({
+        virtual_text = isLspDiagnosticsVisible,
+        underline = isLspDiagnosticsVisible,
+      })
+    end,
+    desc = "Toggle LSP diagnostics visibility",
+  }
   -- LSP info
   if is_available("mason-lspconfig.nvim") then
     lsp_mappings.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" }
