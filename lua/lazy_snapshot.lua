@@ -1,4 +1,5 @@
 return {
+  { "typescript-language-server/typescript-language-server", version = "^4.3.4" },
   { "razzmatazz/csharp-language-server", version = "^0.16" },
   { "AckslD/nvim-neoclip.lua", commit = "831a97c7697736411a05ff8b91e8798ea4c2d6fb" },
   { "AstroNvim/astrotheme", version = "^4.8" },
