@@ -877,7 +877,7 @@ if is_available("telescope.nvim") then
   }
   maps.n["<leader>ff"] = {
     function()
-      require("telescope.builtin").find_files { hidden = true, no_ignore = true }
+      require("telescope.builtin").find_files { hidden = true, no_ignore = true, file_ignore_patterns = { "node_modules", ".git", ".next" } }
     end,
     desc = "Find all files",
   }
