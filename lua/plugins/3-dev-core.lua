@@ -17,6 +17,7 @@
 --       -> none-ls                        [lsp code formatting]
 --       -> garbage-day                    [lsp garbage collector]
 --       -> lazydev                        [lua lsp for nvim plugins]
+--       -> ale                            [fixing code linting]
 
 --       ## AUTO COMPLETION
 --       -> nvim-cmp                       [auto completion engine]
@@ -342,6 +343,20 @@ return {
     }
   },
 
+  -- ale
+  -- https://github.com/dense-analysis/ale_linters
+  {
+    'dense-analysis/ale',
+    config = function()
+        -- Configuration goes here.
+        local g = vim.g
+        g.ale_fix_on_save = 1
+        g.ale_linters = {
+            javascript = { 'prettier', 'eslint' }
+        }
+    end
+  },
+  --
   --  lazy.nvim [lua lsp for nvim plugins]
   --  https://github.com/folke/lazydev.nvim
   {
