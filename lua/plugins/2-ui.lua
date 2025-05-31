@@ -22,7 +22,8 @@
 
 local utils = require("base.utils")
 local is_windows = vim.fn.has('win32') == 1         -- true if on windows
-local is_android = vim.fn.isdirectory('/data') == 1 -- true if on android
+-- local is_android = vim.fn.isdirectory('/data') == 1 -- true if on android
+local is_android = false -- qickfix since it thinks our arch sway wayland setup is android
 
 return {
 
