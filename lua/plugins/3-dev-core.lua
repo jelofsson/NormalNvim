@@ -312,7 +312,28 @@ return {
     "nvimtools/none-ls.nvim",
     event = "User BaseFile",
     opts = function()
-      local builtin_sources = require("null-ls").builtins
+       local null_ls = require("null-ls")
+       null_ls.setup({
+          sources = {
+            null_ls.builtins.formatting.prettier, -- Prettier for JavaScript/TypeScript
+            null_ls.builtins.formatting.stylua,  -- Stylua for Lua
+          },
+          -- you can reuse a shared lspconfig on_attach callback here
+          on_attach = function(client, bufnr)
+          if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              group = augroup,
+              buffer = bufnr,
+              callback = function()
+                 vim.lsp.buf.format({ async = false })
+              end,
+            })
+          end
+        end,
+       })
+
+       local builtin_sources = null_ls.builtins
 
       -- You can customize your 'builtin sources' and 'external sources' here.
       builtin_sources.formatting.shfmt.with({
