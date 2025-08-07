@@ -5,7 +5,7 @@ return {
   { "AckslD/nvim-neoclip.lua", commit = "831a97c7697736411a05ff8b91e8798ea4c2d6fb" },
   { "AstroNvim/astrotheme", version = "^4.8" },
   { "Bilal2453/luvit-meta", commit = "1df30b60b1b4aecfebc785aa98943db6c6989716" },
-  { "CopilotC-Nvim/CopilotChat.nvim", commit = "a89f5f1162b04a0962e5f4c3cdf248a81e7e53cb" },
+  { "CopilotC-Nvim/CopilotChat.nvim", commit = "807c4a179d48aedaf9c5b5dd667486766411d81b" },
   { "Issafalcon/neotest-dotnet", commit = "962af8bcb73622b0f44f1e25a0441f5783fe5665" },
   { "JavaHello/spring-boot.nvim", commit = "218c0c26c14d99feca778e4d13f5ec3e8b1b60f0" },
   { "L3MON4D3/LuaSnip", version = "^3" },
