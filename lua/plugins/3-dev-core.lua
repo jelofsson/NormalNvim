@@ -172,7 +172,7 @@ return {
 
   -- nvim-java [java support]
   -- https://github.com/nvim-java/nvim-java
-  -- Reliable jdtls support. Must go before mason-lspconfig and lsp-config.
+  -- Reliable jdtls support. Must go before lsp-config and mason-lspconfig.
   -- {
   --   "nvim-java/nvim-java",
   --   ft = { "java" },
@@ -180,7 +180,7 @@ return {
   --     "MunifTanjim/nui.nvim",
   --     "neovim/nvim-lspconfig",
   --     "mfussenegger/nvim-dap",
-  --     "williamboman/mason.nvim",
+  --     "mason-org/mason.nvim",
   --   },
   --   opts = {
   --     notifications = {
@@ -200,6 +200,17 @@ return {
   --       '.git',
   --     },
   --   },
+  --   config = function(_, opts)
+  --     require("java").setup(opts)               -- Setup.
+  --     vim.api.nvim_create_autocmd("FileType", { -- Enable for java files.
+  --       desc = "Load this plugin for java files.",
+  --       callback = function()
+  --         local lspconf = utils.get_plugin_opts("nvim-lspconfig")
+  --         local is_java = vim.bo.filetype == "java"
+  --         if lspconf and is_java then require("lspconfig").jdtls.setup({}) end
+  --       end,
+  --     })
+  --   end
   -- },
 
   --  nvim-lspconfig [lsp configs]
@@ -208,7 +219,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = "User BaseFile",
-    dependencies = "zeioth/nvim-java",
+    dependencies = "nvim-java/nvim-java",
   },
 
   -- mason-lspconfig [auto start lsp]
@@ -468,6 +479,7 @@ return {
         { path = "markdown-preview.nvim", mods = { "mkdp" } }, -- has vimscript
         { path = "markmap.nvim", mods = { "markmap" } },
         { path = "neural", mods = { "neural" } },
+        { path = "copilot", mods = { "copilot" } },
         { path = "guess-indent.nvim", mods = { "guess-indent" } },
         { path = "compiler.nvim", mods = { "compiler" } },
         { path = "overseer.nvim", mods = { "overseer", "lualine", "neotest", "resession", "cmp_overseer" } },
@@ -475,6 +487,7 @@ return {
         { path = "nvim-nio", mods = { "nio" } },
         { path = "nvim-dap-ui", mods = { "dapui" } },
         { path = "cmp-dap", mods = { "cmp_dap" } },
+        { path = "cmp-copilot", mods = { "cmp_copilot" } },
         { path = "mason-nvim-dap.nvim", mods = { "mason-nvim-dap" } },
 
         { path = "one-small-step-for-vimkind", mods = { "osv" } },
@@ -510,11 +523,12 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      "saadparwaiz1/cmp_luasnip",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-nvim-lsp",
-      "onsails/lspkind.nvim"
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "saadparwaiz1/cmp_luasnip"},
+      { "zbirenbaum/copilot-cmp", opts = {} } ,
+      { "hrsh7th/cmp-buffer"} ,
+      { "hrsh7th/cmp-path" },
+      { "onsails/lspkind.nvim" },
     },
     event = "InsertEnter",
     opts = function()
@@ -648,9 +662,11 @@ return {
           end, { "i", "s" }),
         },
         sources = cmp.config.sources {
+          -- Note: Priority decides the order items appear.
           { name = "nvim_lsp", priority = 1000 },
           { name = "lazydev",  priority = 850 },
           { name = "luasnip",  priority = 750 },
+          { name = "copilot",  priority = 600 },
           { name = "buffer",   priority = 500 },
           { name = "path",     priority = 250 },
         },
@@ -659,4 +675,3 @@ return {
   },
 
 }
-
