@@ -1404,6 +1404,54 @@ function M.lsp_mappings(client, bufnr)
       { function() require("telescope.builtin").diagnostics() end, desc = "Diagnostics" }
   end
 
+  -- Yank diagnostics at cursor to clipboard
+  lsp_mappings.n["<leader>ly"] = {
+    function()
+      local diagnostics = vim.diagnostic.get(0, {})
+      if not diagnostics or #diagnostics == 0 then
+          print("No diagnostics")
+          return
+      end
+
+      local cursor_line = vim.api.nvim_win_get_cursor(0)[1] - 1 -- 0-based
+      local diagnostic_messages = {}
+      for _, diagnostic in ipairs(diagnostics) do
+          if diagnostic.lnum == cursor_line then
+              table.insert(diagnostic_messages, diagnostic.message)
+          end
+      end
+
+      if #diagnostic_messages == 0 then
+          print("No diagnostic on current line")
+          return
+      end
+
+      local diagnostic_text = table.concat(diagnostic_messages, "\n")
+      vim.fn.setreg("+", diagnostic_text)
+      print("Copied diagnostics on current line to clipboard.")
+    end, desc = "Yank Diagnostics at cursor"
+  }
+
+  -- Yank all diagnostics in buffer to clipboard
+  lsp_mappings.n["<leader>lY"] = {
+    function()
+      local diagnostics = vim.diagnostic.get(0, {})
+      if not diagnostics or #diagnostics == 0 then
+        print("No diagnostics")
+        return
+      end
+
+      local diagnostic_messages = {}
+      for _, diagnostic in ipairs(diagnostics) do
+        table.insert(diagnostic_messages, diagnostic.message)
+      end
+
+      local diagnostic_text = table.concat(diagnostic_messages, "\n")
+      vim.fn.setreg("+", diagnostic_text)
+      print("Copied all diagnostics in buffer to clipboard.")
+    end, desc = "Yank All Diagnostics in Buffer"
+  }
+
   -- Toggle LSP diagnostics visibility
   local isLspDiagnosticsVisible = true
   lsp_mappings.n["<leader>lx"] = {
