@@ -8,6 +8,7 @@
 --       -> nvim-highlight-colors          [hex colors]
 
 --       ## LSP
+--       -> csharp-language-server         [csharp support]
 --       -> nvim-java                      [java support]
 --       -> mason-lspconfig                [auto start lsp]
 --       -> nvim-lspconfig                 [lsp configs]
@@ -168,6 +169,36 @@ return {
   },
 
   --  LSP -------------------------------------------------------------------
+  --
+  --  csharp-language-server - [csharp support]
+  --  https://github.com/razzmatazz/csharp-language-server
+  --
+  {
+    "razzmatazz/csharp-language-server",
+    ft = { "cs" },
+    opts = {
+      root_markers = { ".git" },
+    },
+    config = function(_, opts)
+      -- suppress messages from csharp-language-server
+      -- see: https://github.com/razzmatazz/csharp-language-server/issues/119
+      local original_show_message = vim.lsp.handlers["window/showMessage"]
+      vim.lsp.handlers["window/showMessage"] = function (err, result, context, config)
+        local client = vim.lsp.get_client_by_id(context.client_id)
+
+        local message_type = context and context.message_type
+        if client and client.name == "csharp_ls" then
+          if message_type ~= 1 then
+            -- Suppress non-error messages
+            return
+          end
+        end
+
+        return original_show_message(err, result, context, config)
+      end
+    end
+  },
+
 
   -- nvim-java [java support]
   -- https://github.com/nvim-java/nvim-java
@@ -325,6 +356,7 @@ return {
           sources = {
             null_ls.builtins.formatting.prettier, -- Prettier for JavaScript/TypeScript
             null_ls.builtins.formatting.stylua,  -- Stylua for Lua
+            null_ls.builtins.formatting.csharpier    -- CSharpier for C#
           },
           -- you can reuse a shared lspconfig on_attach callback here
           on_attach = function(client, bufnr)

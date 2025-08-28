@@ -1,7 +1,7 @@
 return {
   { "dense-analysis/ale", version = "^4.0.0" },
   { "typescript-language-server/typescript-language-server", version = "^4.3.4" },
-  { "razzmatazz/csharp-language-server", version = "^0.16" },
+  { "razzmatazz/csharp-language-server", version = "^0.19" },
   { "AckslD/nvim-neoclip.lua", commit = "831a97c7697736411a05ff8b91e8798ea4c2d6fb" },
   { "AstroNvim/astrotheme", version = "^4.8" },
   { "Bilal2453/luvit-meta", commit = "1df30b60b1b4aecfebc785aa98943db6c6989716" },
