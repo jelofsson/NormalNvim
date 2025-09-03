@@ -557,7 +557,7 @@ vim.api.nvim_create_autocmd("CmdwinEnter", {
 
 -- alpha-nvim --------------------------------------------------------------
 if is_available("alpha-nvim") then
-  maps.n["<leader>h"] = {
+  maps.n["<leader>H"] = {
     function()
       local wins = vim.api.nvim_tabpage_list_wins(0)
       if #wins > 1
@@ -1330,11 +1330,15 @@ if is_available("neural") or is_available("copilot") then
     toggle_copilot_chat,
     desc = "Ask Copilot",
   }
-  maps.n["<leader>cpd"] = {
+  maps.n["<leader>h"] = {
+    "<cmd>Copilot enable<cr>",
+    desc = "Copilot",
+  }
+  maps.n["<leader>hd"] = {
     "<cmd>Copilot disable<cr>",
     desc = "Copilot Disable",
   }
-  maps.n["<leader>cpe"] = {
+  maps.n["<leader>he"] = {
     "<cmd>Copilot enable<cr>",
     desc = "Copilot Enable",
   }

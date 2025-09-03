@@ -18,6 +18,7 @@
 --       -> garbage-day                    [lsp garbage collector]
 --       -> lazydev                        [lua lsp for nvim plugins]
 --       -> ale                            [fixing code linting]
+--       -> copy-diagnostics               [copy diagnostics to clipboard]
 
 --       ## AUTO COMPLETION
 --       -> nvim-cmp                       [auto completion engine]
