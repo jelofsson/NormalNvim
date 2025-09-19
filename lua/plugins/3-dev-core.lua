@@ -176,7 +176,7 @@ return {
   --
   {
     "razzmatazz/csharp-language-server",
-    ft = { "cs" },
+  ft = { "cs", "csproj", "sln", "slnx", "props", "csx", "targets" },
     opts = {
       root_markers = { ".git" },
     },
@@ -199,6 +199,26 @@ return {
       end
     end
   },
+
+  -- easy-dotnet
+{
+  "GustavEikaas/easy-dotnet.nvim",
+  ft = { "cs", "csproj", "sln", "slnx", "props", "csx", "targets" },
+  dependencies = { "nvim-lua/plenary.nvim", 'nvim-telescope/telescope.nvim', },
+  config = function()
+    require("easy-dotnet").setup({
+      ---@type TestRunnerOptions
+      test_runner = {
+        ---@type "split" | "vsplit" | "float" | "buf"
+        viewmode = "float"
+      },
+      test = {
+        ---@type "split" | "vsplit" | "float" | "buf"
+        viewmode = "float"
+      }
+    })
+  end
+},
 
 
   -- nvim-java [java support]

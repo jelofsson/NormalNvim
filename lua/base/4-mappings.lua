@@ -1238,13 +1238,31 @@ if is_available("nvim-coverage") then
   }
 end
 
--- Extra - nodejs testing commands
+-- Extra - testing commands
 maps.n["<leader>Ta"] = {
-  function() vim.cmd("TestNodejs") end,
+  function()
+    local ft = vim.bo.filetype
+    if ft == "javascript" or ft == "typescript" then
+      vim.cmd("TestNodejs")
+    elseif ft == "cs" then
+      vim.fn.execute("Dotnet test solution")
+    else
+      -- fallback or do nothing
+    end
+  end,
   desc = "All",
 }
 maps.n["<leader>Te"] = {
-  function() vim.cmd("TestNodejsE2e") end,
+  function()
+    local ft = vim.bo.filetype
+    if ft == "javascript" or ft == "typescript" then
+      vim.cmd("TestNodejsE2e")
+    elseif ft == "cs" then
+      vim.fn.execute("Dotnet test solution")
+    else
+      -- fallback or do nothing
+    end
+  end,
   desc = "E2e",
 }
 
@@ -1330,18 +1348,22 @@ if is_available("neural") or is_available("copilot") then
     toggle_copilot_chat,
     desc = "Ask Copilot",
   }
+
   maps.n["<leader>h"] = {
-    "<cmd>Copilot enable<cr>",
-    desc = "Copilot",
-  }
-  maps.n["<leader>hd"] = {
-    "<cmd>Copilot disable<cr>",
-    desc = "Copilot Disable",
-  }
-  maps.n["<leader>he"] = {
-    "<cmd>Copilot enable<cr>",
-    desc = "Copilot Enable",
-  }
+  function()
+    local enabled = vim.g.copilot_enabled or false
+    if enabled then
+      vim.cmd("Copilot disable")
+      vim.notify("Copilot Disabled", vim.log.levels.INFO)
+      vim.g.copilot_enabled = false
+    else
+      vim.cmd("Copilot enable")
+      vim.notify("Copilot Enabled", vim.log.levels.INFO)
+      vim.g.copilot_enabled = true
+    end
+  end,
+  desc = "Toggle Copilot",
+}
 end
 
 -- hop.nvim ----------------------------------------------------------------

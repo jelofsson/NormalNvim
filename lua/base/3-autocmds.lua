@@ -238,9 +238,17 @@ autocmd("BufWritePre", {
   end,
 })
 
+-- 10. Format using lsp during save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.cs,*.js,*.ts,*.tsx,*.jsx,*.json,*.css,*.scss,*.html,*.lua,*.py",
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
+})
+
 -- ## COMMANDS --------------------------------------------------------------
 
--- 10. Testing commands
+-- 11. Testing commands
 -- Aditional commands to the ones implemented in neotest.
 -------------------------------------------------------------------
 
@@ -257,6 +265,29 @@ cmd("TestNodejsE2e", function()
   vim.cmd(":ProjectRoot")                -- cd the project root (requires project.nvim)
   vim.cmd(":TermExec cmd='npm run e2e'") -- Conventional way to call e2e in nodejs (requires ToggleTerm)
 end, { desc = "Run e2e tests for the current nodejs project" })
+
+-- Customize this command to work as you like
+cmd("DotnetTestFloat", function()
+  vim.cmd(":ProjectRoot")
+  -- Capture the output of the command
+  local output = vim.fn.execute("Dotnet test solution")
+  -- Create a floating buffer
+  local buf = vim.api.nvim_create_buf(false, true)
+  local width = math.floor(vim.o.columns * 0.8)
+  local height = math.floor(vim.o.lines * 0.8)
+  local opts = {
+    style = "minimal",
+    relative = "editor",
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2),
+    col = math.floor((vim.o.columns - width) / 2),
+    border = "single",
+  }
+  vim.api.nvim_open_win(buf, true, opts)
+  -- Set the output to the buffer
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(output, "\n"))
+end, { desc = "Run :Dotnet test solution in a floating window" })
 
 -- Extra commands
 ----------------------------------------------
