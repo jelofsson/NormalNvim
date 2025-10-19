@@ -57,7 +57,10 @@ return {
     build = ":TSUpdate",
     opts = {
       auto_install = false, -- Currently bugged. Use [:TSInstall all] and [:TSUpdate all]
-
+      ensure_installed = {
+        'markdown',
+        'markdown_inline',
+      },
       highlight = {
         enable = true,
         disable = function(_, bufnr) return utils.is_big_file(bufnr) end,
@@ -141,6 +144,8 @@ return {
     ft = { "markdown" },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {
+      render_modes = true,
+      file_types = { "markdown", "codecompanion" },
       heading = {
         sign = false,
         icons = require("base.utils").get_icon("RenderMarkdown"),

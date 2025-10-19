@@ -419,6 +419,46 @@ return {
     opts = {}
   },
 
+  -- [CodeCompanion AI]
+  -- https://codecompanion.olimorris.dev
+  {
+    "olimorris/codecompanion.nvim",
+    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "ravitemer/codecompanion-history.nvim",
+      {
+        "MeanderingProgrammer/render-markdown.nvim", -- Enhanced markdown rendering
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+        ft = { "markdown", "codecompanion" },
+      },
+    },
+    config = function()
+      require("codecompanion").setup({
+        strategies = {
+          inline = {
+            adapter = "copilot",
+          },
+          cmd = {
+            adapter = "copilot",
+          },
+          chat = {
+            adapter = {
+              name = "copilot",
+              model = "claude-sonnet-4",
+            },
+            markdown = {
+              enabled = true, -- Enable markdown styling for chat window
+              theme = "default", -- You can specify a theme or customize further
+            },
+          },
+        },
+      })
+    end
+  },
+
   --  COMPILER ----------------------------------------------------------------
   --  compiler.nvim [compiler]
   --  https://github.com/zeioth/compiler.nvim

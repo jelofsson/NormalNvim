@@ -1330,23 +1330,18 @@ if is_available("markdown-preview.nvim") or is_available("markmap.nvim") or is_a
 end
 
 -- [neural] -----------------------------------------------------------------
-
-local copilot_chat_open = false
-
-local function toggle_copilot_chat()
-  if copilot_chat_open then
-    vim.cmd("CopilotChatClose")
-  else
-    vim.cmd("CopilotChat")
-  end
-  copilot_chat_open = not copilot_chat_open
-end
-
-
-if is_available("neural") or is_available("copilot") then
+if is_available("neural") or is_available("codecompanion") then
   maps.n["<leader>a"] = {
-    toggle_copilot_chat,
-    desc = "Ask Copilot",
+    function()
+      vim.cmd("CodeCompanionActions")
+    end,
+    desc = "CodeCompanion",
+  }
+  maps.n["<leader>p"] = {
+    function()
+      vim.cmd("CodeCompanion")
+    end,
+    desc = "CodeCompanion Prompt",
   }
 
   maps.n["<leader>h"] = {
