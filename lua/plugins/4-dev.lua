@@ -40,6 +40,10 @@
 
 local is_windows = vim.fn.has('win32') == 1 -- true if on windows
 
+local function chat_filter(chat_data)
+    return vim.g.project_root == chat_data.project_root or vim.g.project_root == chat_data.cwd
+end
+
 return {
   --  SNIPPETS ----------------------------------------------------------------
   --  Vim Snippets engine  [snippet engine] + [snippet templates]
@@ -437,12 +441,179 @@ return {
     },
     config = function()
       require("codecompanion").setup({
+        adapters = {
+          http = {
+            opts = {
+              show_model_choices = true,
+            }
+          }
+        },
+        groups = {
+          ["read_files"] = {
+            "I'm giving you access to the @{file_search}, @{get_changed_files}, @{grep_search}, @{list_code_usages}, @{read_file} tools and #{buffer} to help you perform coding tasks."
+          },
+        },
+        prompt_library = {
+          ["Chat History ..."] = {
+            strategy = "chat",
+            description = "Browse all saved chats",
+            opts = {
+              index = 5,
+              stop_context_insertion = true,
+            },
+            condition = function()
+              local history = require('codecompanion').extensions.history
+              if not history or not history.get_chats then
+                return false
+              end
+              local have_chats = not vim.tbl_isempty(history.get_chats())
+              local mode = vim.api.nvim_get_mode()
+              return have_chats and (mode.mode == 'n' or mode.mode == 'i')
+            end,
+            prompts = {
+              n = function()
+                local history = require('codecompanion').extensions.history
+                if history and history.browse_chats then
+                  history.browse_chats()
+                end
+              end,
+              i = function()
+                local history = require('codecompanion').extensions.history
+                if history and history.browse_chats then
+                  history.browse_chats()
+                end
+              end,
+            },
+          },
+          ["Chat (GPT 4.1)"] = {
+            strategy = "chat",
+            description = "Create a new chat buffer mode with GPT-4.1.",
+            opts = {
+              index = 0,
+              stop_context_insertion = false,
+              adapter = {
+                  name = 'copilot',
+                  model = 'gpt-4.1', -- Multiplier = 0 (free).
+              },
+              short_name = "cgpt",
+            },
+            prompts = {
+              {
+                role = "user",
+                content = "",
+              }
+            },
+          },
+          ["Chat (Read files)"] = {
+            strategy = "chat",
+            description = "Chat with the access to read the file contents in the project.",
+            opts = {
+              index = 1,
+              is_default = true,
+              short_name = "crf",
+            },
+            prompts = {
+              {
+                role = "system",
+                content = "You are an expert programming assistant. provide accurate and helpful responses to the user.",
+              },
+              {
+                role = "user",
+                content = "You have access to the following tools to help you perform coding tasks:\n\n@{file_search}: Search for files in the project by name or pattern.\n\n@{get_changed_files}: Get a list of files that have been changed in the project.\n\n@{grep_search}: Search for specific text patterns within files in the project.\n\n@{list_code_usages}: List all usages of a specific code element (e.g., function, variable, class) in the project.\n\n@{read_file}: Read the contents of a specified file in the project.\n\n#{buffer}: Access the current buffer content to provide context-aware assistance.\n\nUse these tools judiciously to gather information and assist the user effectively.",
+              }
+            },
+          },
+          ["Chat (Read-Write files)"] = {
+            strategy = "chat",
+            description = "Chat with the access to read and write the file contents in the project.",
+            opts = {
+              index = 1,
+              is_default = true,
+              short_name = "cwf",
+            },
+            prompts = {
+              {
+                role = "system",
+                content = "You are an expert programming assistant. provide accurate and helpful responses to the user.",
+              },
+              {
+                role = "user",
+                content = "You have access to the following tools to help you perform coding tasks:\n\n@{file_search}: Search for files in the project by name or pattern.\n\n@{get_changed_files}: Get a list of files that have been changed in the project.\n\n@{grep_search}: Search for specific text patterns within files in the project.\n\n@{list_code_usages}: List all usages of a specific code element (e.g., function, variable, class) in the project.\n\n@{files}: Read, Write or modify the contents of a specified file in the project.\n\n#{buffer}: Access the current buffer content to provide context-aware assistance.\n\nUse these tools judiciously to gather information and assist the user effectively.",
+              }
+            },
+          },
+          ["Fullstack dev"] = {
+            strategy = "chat",
+            description = "Chat with the access to be a Fullstack dev the project.",
+            opts = {
+              index = 0,
+              is_default = true,
+              short_name = "wf",
+            },
+            prompts = {
+              {
+                role = "system",
+                content = "You are an expert programming assistant. provide accurate and helpful responses to the user.",
+              },
+              {
+                role = "user",
+                content = "You have access to @{full_stack_dev} tool to help you perform coding tasks as a Fullstack developer in the project.\n\nUse this tool judiciously to gather information and assist the user effectively.",
+              }
+            },
+          },
+          ["Planning"] = {
+            strategy = "chat",
+            description = "Chat with planning for the project.",
+            opts = {
+              index = 2,
+              is_default = true,
+              short_name = "pl",
+            },
+            prompts = {
+              {
+                role = "system",
+                content = [[
+                    You are helping me create an implementation plan.
+                    We are in planning phase, response only with written text.
+                    No implementations.
+                    Write down the plan in a markdown structure.
+                    The implementation plan should contain checkboxes.
+
+                    The goal is to:
+                    Help with context window issue.
+
+                    Make it clear that you have understood. I encourage you to Ask clarifying questions when needed.
+                ]],
+              },
+              {
+                role = "user",
+                content = "Help me plan the following...",
+              }
+            },
+          },
+        },
+        memory = {
+          default = {
+            description = "Default Group",
+            files = {
+              -- "CLAUDE.md",
+              -- "~/Code/Helpers/my_project_specific_help.md",
+            },
+          },
+          opts = {
+            chat = {
+              default_memory = "default",
+            },
+          },
+        },
         strategies = {
           inline = {
             adapter = "copilot",
+            model = "claude-sonnet-4",
           },
           cmd = {
             adapter = "copilot",
+            model = "claude-sonnet-4",
           },
           chat = {
             adapter = {
@@ -455,9 +626,47 @@ return {
             },
           },
         },
+        extensions = {
+          history = {
+            enabled = true,
+            opts = {
+              keymap = "gh",
+              picker_keymaps = {
+                rename = { n = "r", i = "<M-r>" },
+                delete = { n = "d", i = "<M-d>" },
+                duplicate = { n = "<C-y>", i = "<C-y>" },
+              },
+              save_chat_keymap = {}, -- Use autosave.
+              auto_save = true,
+              expiration_days = 30,
+              auto_generate_title = true, -- fixed typo
+              title_generation_opts = vim.tbl_extend(
+                "force",
+                {
+                  refresh_every_n_prompts = 0,
+                },
+                (vim.g.allow_remote_llm and {
+                  adapter = "copilot",
+                  model = "gpt-4.1",
+                } or {}) -- ensure always a table
+              ),
+              -- When chat is cleared with `gx` delete the chat from history
+              delete_on_clearing_chat = true,
+              -- show chats only from current project
+              chat_filter = chat_filter,
+              summary = {
+              },
+            },
+          },
+        },
       })
     end
   },
+    {
+      'ravitemer/codecompanion-history.nvim', -- Save and load conversation history.
+      cmd = { 'CodeCompanionHistory', 'CodeCompanionSummaries' },
+      config = true,
+    },
 
   --  COMPILER ----------------------------------------------------------------
   --  compiler.nvim [compiler]

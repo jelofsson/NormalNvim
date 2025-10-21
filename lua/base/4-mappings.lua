@@ -1331,18 +1331,29 @@ end
 
 -- [neural] -----------------------------------------------------------------
 if is_available("neural") or is_available("codecompanion") then
-  maps.n["<leader>a"] = {
-    function()
-      vim.cmd("CodeCompanionActions")
-    end,
-    desc = "CodeCompanion",
-  }
-  maps.n["<leader>p"] = {
-    function()
-      vim.cmd("CodeCompanion")
-    end,
-    desc = "CodeCompanion Prompt",
-  }
+-- For CodeCompanionActions (works in both modes)
+maps.n["<leader>a"] = {
+  function()
+    vim.cmd("CodeCompanionActions")
+  end,
+  desc = "CodeCompanion",
+}
+maps.v["<leader>a"] = {
+  ":<C-u>'<,'>CodeCompanionActions<CR>",
+  desc = "CodeCompanion",
+}
+
+-- For CodeCompanion prompt
+maps.n["<leader>p"] = {
+  function()
+    vim.cmd("CodeCompanion")
+  end,
+  desc = "CodeCompanion Prompt",
+}
+maps.v["<leader>p"] = {
+  ":<C-u>'<,'>CodeCompanion<CR>",
+  desc = "CodeCompanion Prompt (Visual)",
+}
 
   maps.n["<leader>h"] = {
   function()
