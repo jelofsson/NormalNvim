@@ -659,8 +659,68 @@ return {
             },
           },
         },
+        strategies = {
+          inline = {
+            adapter = "copilot",
+            model = "claude-sonnet-4",
+          },
+          cmd = {
+            adapter = "copilot",
+            model = "claude-sonnet-4",
+          },
+          chat = {
+            adapter = {
+              name = "copilot",
+              model = "claude-sonnet-4",
+            },
+            markdown = {
+              enabled = true, -- Enable markdown styling for chat window
+              theme = "default", -- You can specify a theme or customize further
+            },
+            -- Add custom keymaps for message removal
+            keymaps = {
+              remove_messages_picker = {
+                modes = { n = "gE" },
+                description = "Remove chat messages (picker)",
+                callback = function()
+                  local chat_remove = require("codecompanion-chat-remove")
+                  local buf = vim.api.nvim_get_current_buf()
+                  local chat = require("codecompanion.strategies.chat").buf_get_chat(buf)
+                  if chat then
+                    chat_remove.exports.remove_chat_messages(chat)
+                  end
+                end,
+              },
+              remove_last_user = {
+                modes = { n = "gO" },
+                description = "Remove last user message",
+                callback = function()
+                  local chat_remove = require("codecompanion-chat-remove")
+                  local buf = vim.api.nvim_get_current_buf()
+                  local chat = require("codecompanion.strategies.chat").buf_get_chat(buf)
+                  if chat then
+                    chat_remove.exports.remove_last_user(chat)
+                  end
+                end,
+              },
+            },
+          },
+        },
       })
     end
+  },
+
+  -- Chat message removal functionality for CodeCompanion
+  {
+    dir = vim.fn.stdpath("config") .. "/lua/codecompanion-chat-remove",
+    name = "codecompanion-chat-remove",
+    dependencies = { "olimorris/codecompanion.nvim", "nvim-telescope/telescope.nvim" },
+    ft = { "codecompanion" },
+    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+    config = function()
+      -- The keymaps are now configured directly in CodeCompanion's chat strategy above
+      -- Chat removal functionality loaded silently
+    end,
   },
     {
       'ravitemer/codecompanion-history.nvim', -- Save and load conversation history.
