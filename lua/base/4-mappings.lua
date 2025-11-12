@@ -1334,6 +1334,8 @@ if is_available("neural") or is_available("codecompanion") then
 -- For CodeCompanionActions (works in both modes)
 maps.n["<leader>a"] = {
   function()
+    -- Ensure the plugin is loaded before calling the command
+    require("codecompanion")
     vim.cmd("CodeCompanionActions")
   end,
   desc = "CodeCompanion",
@@ -1346,6 +1348,8 @@ maps.v["<leader>a"] = {
 -- For CodeCompanion prompt
 maps.n["<leader>p"] = {
   function()
+    -- Ensure the plugin is loaded before calling the command
+    require("codecompanion")
     vim.cmd("CodeCompanion")
   end,
   desc = "CodeCompanion Prompt",

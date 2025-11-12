@@ -37,6 +37,9 @@
 
 --       ## LANGUAGE IMPROVEMENTS
 --       -> guttentags_plus                [auto generate C/C++ tags]
+--
+--       ## OTHERS
+--       -> surround.nvim                   [surround text objects]
 
 local is_windows = vim.fn.has('win32') == 1 -- true if on windows
 
@@ -1267,6 +1270,16 @@ return {
         end,
       })
     end,
+  },
+
+
+  -- OTHERS ---------------------------------------------------------------------
+  -- surround.nvim [surround]
+  -- https://tpope.io/vim/surround.git
+  -- Add, delete, change surroundings (parentheses, brackets, quotes, tags, and more).
+  {
+    "tpope/vim-surround",
+    event = "User BaseFile",
   },
 
 } -- end of return
