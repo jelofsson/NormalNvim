@@ -599,7 +599,7 @@ return {
           default = {
             description = "Default Group",
             files = {
-              -- "CLAUDE.md",
+              ".github/copilot-instructions.md",
               -- "~/Code/Helpers/my_project_specific_help.md",
             },
           },

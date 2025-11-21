@@ -1331,49 +1331,104 @@ end
 
 -- [neural] -----------------------------------------------------------------
 if is_available("neural") or is_available("codecompanion") then
--- For CodeCompanionActions (works in both modes)
-maps.n["<leader>a"] = {
-  function()
-    -- Ensure the plugin is loaded before calling the command
-    require("codecompanion")
-    vim.cmd("CodeCompanionActions")
-  end,
-  desc = "CodeCompanion",
-}
-maps.v["<leader>a"] = {
-  ":<C-u>'<,'>CodeCompanionActions<CR>",
-  desc = "CodeCompanion",
-}
+  -- For CodeCompanionActions (works in both modes)
+  maps.n["<leader>a"] = {
+    function()
+      local ok, codecompanion = pcall(require, "codecompanion")
+      if ok and codecompanion.actions then
+        codecompanion.actions()
+      else
+        vim.notify("CodeCompanion not properly loaded", vim.log.levels.ERROR)
+      end
+    end,
+    desc = "CodeCompanion",
+  }
+  maps.v["<leader>a"] = {
+    function()
+      local ok, codecompanion = pcall(require, "codecompanion")
+      if ok and codecompanion.actions then
+        -- Get visual selection range
+        local start_pos = vim.fn.getpos("'<")
+        local end_pos = vim.fn.getpos("'>")
+        codecompanion.actions({ range = { start_pos[2], end_pos[2] } })
+      else
+        vim.notify("CodeCompanion not properly loaded", vim.log.levels.ERROR)
+      end
+    end,
+    desc = "CodeCompanion",
+  }
 
 -- For CodeCompanion prompt
 maps.n["<leader>p"] = {
   function()
-    -- Ensure the plugin is loaded before calling the command
-    require("codecompanion")
-    vim.cmd("CodeCompanion")
+    local ok, codecompanion = pcall(require, "codecompanion")
+    if ok and codecompanion.chat then
+      codecompanion.chat()
+    else
+      -- Fallback to command if API not available
+      require("codecompanion")
+      if vim.fn.exists(":CodeCompanion") == 2 then
+        vim.cmd("CodeCompanion")
+      else
+        vim.notify("CodeCompanion command not available", vim.log.levels.WARN)
+      end
+    end
   end,
   desc = "CodeCompanion Prompt",
 }
+
 maps.v["<leader>p"] = {
-  ":<C-u>'<,'>CodeCompanion<CR>",
+  function()
+    local ok, codecompanion = pcall(require, "codecompanion")
+    if ok and codecompanion.chat then
+      -- Get visual selection range
+      local start_pos = vim.fn.getpos("'<")
+      local end_pos = vim.fn.getpos("'>")
+      codecompanion.chat({ range = { start_pos[2], end_pos[2] } })
+    else
+      -- Fallback to command if API not available
+      require("codecompanion")
+      if vim.fn.exists(":CodeCompanion") == 2 then
+        vim.cmd("'<,'>CodeCompanion")
+      else
+        vim.notify("CodeCompanion command not available", vim.log.levels.WARN)
+      end
+    end
+  end,
   desc = "CodeCompanion Prompt (Visual)",
 }
 
-  maps.n["<leader>h"] = {
+maps.n["<leader>h"] = {
   function()
+    -- Check if Copilot commands exist before using them
+    local copilot_disable_exists = vim.fn.exists(":Copilot") == 2
     local enabled = vim.g.copilot_enabled or false
+
+    if not copilot_disable_exists then
+      vim.notify("Copilot commands not available", vim.log.levels.WARN)
+      return
+    end
+
     if enabled then
-      vim.cmd("Copilot disable")
-      vim.notify("Copilot Disabled", vim.log.levels.INFO)
-      vim.g.copilot_enabled = false
+      local ok, _ = pcall(vim.cmd, "Copilot disable")
+      if ok then
+        vim.notify("Copilot Disabled", vim.log.levels.INFO)
+        vim.g.copilot_enabled = false
+      else
+        vim.notify("Failed to disable Copilot", vim.log.levels.ERROR)
+      end
     else
-      vim.cmd("Copilot enable")
-      vim.notify("Copilot Enabled", vim.log.levels.INFO)
-      vim.g.copilot_enabled = true
+      local ok, _ = pcall(vim.cmd, "Copilot enable")
+      if ok then
+        vim.notify("Copilot Enabled", vim.log.levels.INFO)
+        vim.g.copilot_enabled = true
+      else
+        vim.notify("Failed to enable Copilot", vim.log.levels.ERROR)
+      end
     end
   end,
   desc = "Toggle Copilot",
-}
+  }
 end
 
 -- hop.nvim ----------------------------------------------------------------
