@@ -104,10 +104,10 @@ return {
   },
 
   -- mini.bufremove [smart bufdelete]
-  -- https://github.com/echasnovski/mini.bufremove
+  -- https://github.com/nvim-mini/mini.bufremove
   -- Defines what tab to go on :bufdelete
   {
-    "echasnovski/mini.bufremove",
+    "nvim-mini/mini.bufremove",
     event = "User BaseFile"
   },
 
@@ -589,7 +589,7 @@ return {
   --  https://github.com/andymass/vim-matchup
   {
     "andymass/vim-matchup",
-    event = "User BaseFile",
+    event = "User BaseDefered",
     config = function()
       vim.g.matchup_matchparen_deferred = 1   -- work async
       vim.g.matchup_matchparen_offscreen = {} -- disable status bar icon
