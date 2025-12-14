@@ -1,4 +1,6 @@
 return {
+  { "ravitemer/codecompanion-history.nvim", commit = "eb99d256352144cf3b6a1c45608ec25544a0813d" },
+  { "olimorris/codecompanion.nvim", version = "^17" },
   { "dense-analysis/ale", version = "^4.0.0" },
   { "typescript-language-server/typescript-language-server", version = "^4.3.4" },
   { "razzmatazz/csharp-language-server", version = "^0.19" },
