@@ -609,26 +609,6 @@ return {
             },
           },
         },
-        strategies = {
-          inline = {
-            adapter = "copilot",
-            model = "claude-sonnet-4",
-          },
-          cmd = {
-            adapter = "copilot",
-            model = "claude-sonnet-4",
-          },
-          chat = {
-            adapter = {
-              name = "copilot",
-              model = "claude-sonnet-4",
-            },
-            markdown = {
-              enabled = true, -- Enable markdown styling for chat window
-              theme = "default", -- You can specify a theme or customize further
-            },
-          },
-        },
         extensions = {
           history = {
             enabled = true,
