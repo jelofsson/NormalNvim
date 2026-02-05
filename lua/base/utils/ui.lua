@@ -356,6 +356,11 @@ function M.toggle_zen_mode(bufnr)
   bufnr = bufnr or 0
   if not vim.g.zen_mode then
     vim.g.zen_mode = true
+    -- Set up zen mode specific keymaps
+    vim.keymap.set("n", "<C-Up>", "<cmd>resize -2<CR>", { noremap = true, silent = true, desc = "Resize zen window up" })
+    vim.keymap.set("n", "<C-Down>", "<cmd>resize +2<CR>", { noremap = true, silent = true, desc = "Resize zen window down" })
+    vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { noremap = true, silent = true, desc = "Resize zen window left" })
+    vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { noremap = true, silent = true, desc = "Resize zen window right" })
   else
     vim.g.zen_mode = false
   end
