@@ -16,6 +16,7 @@
 --       -> 7. Customize right click contextual menu.
 --       -> 8. Unlist quickfix buffers if the filetype changes.
 --       -> 9. Close all notifications on BufWritePre.
+--       -> Send yanked text to Wayland clipboard (wl-copy)
 --
 --       ## COMMANDS
 --       -> 10. Neotest commands.
@@ -243,6 +244,31 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.cs,*.js,*.ts,*.tsx,*.jsx,*.json,*.css,*.scss,*.html,*.lua,*.py",
   callback = function()
     vim.lsp.buf.format({ async = false })
+  end,
+})
+
+-- 11. Send yanked text to Wayland clipboard (wl-copy)
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    if vim.fn.executable('wl-copy') ~= 1 then return end
+    -- get register as list of lines
+    local lines = vim.fn.getreg('"', 1, true)
+    if not lines or vim.tbl_isempty(lines) then return end
+    local regtype = vim.fn.getregtype('"') or ''
+    local text = table.concat(lines, '\n')
+    -- ensure final newline for linewise yanks
+    if regtype:match('[Vv]') or regtype == 'V' then
+      text = text .. '\n'
+    end
+    -- send to wl-copy (keeps wl-copy running with --foreground so clipboard is owned)
+    local job_id = vim.fn.jobstart({ 'wl-copy', '--foreground', '--type', 'text/plain' }, {
+      stdin = "pipe",
+      on_exit = function() end
+    })
+    if job_id > 0 then
+      vim.fn.chansend(job_id, text)
+      vim.fn.chanclose(job_id, "stdin")
+    end
   end,
 })
 
