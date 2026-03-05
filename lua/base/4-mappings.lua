@@ -932,6 +932,7 @@ if is_available("telescope.nvim") then
             "--hidden", "--no-ignore",
             "--glob", "!.git/**",
             "--glob", "!node_modules/**",
+            "--glob", "!dist/**",
             "--glob", "!.next/**",
             "--glob", "!package-lock.json"
           }
