@@ -40,6 +40,13 @@ return {
         comments = { italic = true },
         keywords = { italic = true },
       },
+      --  colors:
+      --  https://github.com/folke/tokyonight.nvim/blob/main/extras/lua/tokyonight_night.lua
+      on_colors = function(colors)
+        -- Customize individual colors here
+        -- Example: colors.hint = colors.orange
+        -- Example: colors.error = "#ff0000"
+      end,
     }
   },
 

@@ -101,6 +101,7 @@ maps.n["gx"] =
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
 maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
 maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
+maps.n["<leader>s"] = { "<cmd>vsplit<cr>", desc = "Vertical split" }
 maps.i["<C-BS>"] = { "<C-W>", desc = "Enable CTRL+backsace to delete." }
 maps.n["0"] =
 { "^", desc = "Go to the fist character of the line (aliases 0 to ^)" }
