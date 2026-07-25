@@ -429,7 +429,7 @@ return {
   -- [CodeCompanion AI]
   -- https://codecompanion.olimorris.dev
   {
-    "olimorris/codecompanion.nvim",
+    "jelofsson/codecompanion.nvim",
     cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
     opts = {},
     dependencies = {
@@ -444,6 +444,7 @@ return {
     },
     config = function()
       require("codecompanion").setup({
+        log_level = "DEBUG", -- or vim.log.levels.DEBUG
         adapters = {
           http = {
             opts = {
@@ -697,7 +698,7 @@ return {
   {
     dir = vim.fn.stdpath("config") .. "/lua/codecompanion-chat-remove",
     name = "codecompanion-chat-remove",
-    dependencies = { "olimorris/codecompanion.nvim", "nvim-telescope/telescope.nvim" },
+    dependencies = { "jelofsson/codecompanion.nvim", "nvim-telescope/telescope.nvim" },
     ft = { "codecompanion" },
     cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
     config = function()

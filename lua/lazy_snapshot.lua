@@ -1,6 +1,6 @@
 return {
   { "ravitemer/codecompanion-history.nvim", commit = "bc1b4fe06eaaf0aa2399be742e843c22f7f1652a" },
-  { "olimorris/codecompanion.nvim", version = "^18" },
+  { "jelofsson/codecompanion.nvim", version = "*" },
   { "dense-analysis/ale", version = "^4.0.0" },
   { "typescript-language-server/typescript-language-server", version = "^4.3.4" },
   { "razzmatazz/csharp-language-server", version = "^0.19" },
@@ -17,7 +17,7 @@ return {
   { "NMAC427/guess-indent.nvim", version = "^1" },
   { "Shatur/neovim-session-manager", version = "^1" },
   { "akinsho/toggleterm.nvim", version = "^3" },
-  { "andymass/vim-matchup", commit = "0fb1e6b7cea34e931a2af50b8ad565c5c4fd8f4d" },
+  { "andymass/vim-matchup", commit = "055881643e1b37038a572c883de7b1969716db77" },
   { "andythigpen/nvim-coverage", commit = "a939e425e363319d952a6c35fb3f38b34041ded2" },
   { "benfowler/telescope-luasnip.nvim", version = "^1" },
   { "bngarren/checkmate.nvim", commit = "fc8edd6ecf8e4095ef878780e4bed83cc5c56c14" },
