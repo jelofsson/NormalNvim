@@ -445,6 +445,30 @@ return {
     config = function()
       require("codecompanion").setup({
         log_level = "DEBUG", -- or vim.log.levels.DEBUG
+        rules = {
+          opts = {
+            chat = {
+              autoload = {
+                "default",
+              },
+              autoload_groups_in_prompt_library = true,
+            }
+          },
+          default = {
+            description = "Collection of common files for all projects",
+            files = {
+              ".github/copilot-instructions.md",
+              "AGENT.md",
+              { path = "CLAUDE.md", parser = "claude" },
+            },
+            is_present = true,
+            opts = {
+              chat = {
+                autoload = "default",
+              }
+            },
+          },
+        },
         adapters = {
           http = {
             opts = {
@@ -557,11 +581,17 @@ return {
             prompts = {
               {
                 role = "system",
-                content = "You are an expert programming assistant. provide accurate and helpful responses to the user.",
+                content = [[
+                You are an expert programming assistant.
+                provide accurate and helpful responses to the user.
+
+                Never run tests nor builds, its up to the user to run those.
+                never create summary documents.
+                ]],
               },
               {
                 role = "user",
-                content = "You have access to @{full_stack_dev} tool to help you perform coding tasks as a Fullstack developer in the project.\n\nUse this tool judiciously to gather information and assist the user effectively.",
+                content = "You have access to @{agent} tool to help you perform coding tasks as a Fullstack developer in the project.\n\nUse this tool judiciously to gather information and assist the user effectively.",
               }
             },
           },
@@ -593,20 +623,6 @@ return {
                 role = "user",
                 content = "Help me plan the following...",
               }
-            },
-          },
-        },
-        memory = {
-          default = {
-            description = "Default Group",
-            files = {
-              ".github/copilot-instructions.md",
-              -- "~/Code/Helpers/my_project_specific_help.md",
-            },
-          },
-          opts = {
-            chat = {
-              default_memory = "default",
             },
           },
         },
