@@ -59,6 +59,13 @@ return {
     opts = {
       auto_install = false, -- Currently bugged. Use [:TSInstall all] and [:TSUpdate all]
       ensure_installed = {
+        'javascript',
+        'typescript',
+        'tsx',
+        'html',
+        'lua',
+        'vim',
+        'vimdoc',
         'markdown',
         'markdown_inline',
         'yaml',
@@ -210,6 +217,8 @@ return {
       root_markers = { ".git" },
     },
     config = function(_, opts)
+      vim.lsp.enable('csharp_ls')
+
       -- suppress messages from csharp-language-server
       -- see: https://github.com/razzmatazz/csharp-language-server/issues/119
       local original_show_message = vim.lsp.handlers["window/showMessage"]
@@ -310,7 +319,12 @@ return {
     "mason-org/mason-lspconfig.nvim",
     dependencies = { "neovim/nvim-lspconfig" },
     event = "User BaseFile",
-    opts = {},
+    opts = {
+      ensure_installed = {
+        "vtsls",
+        "csharp_ls",
+      },
+    },
     config = function(_, opts)
       require("mason-lspconfig").setup(opts)
       utils.apply_lsp_diagnostic_defaults() -- Only needs to be called once.
