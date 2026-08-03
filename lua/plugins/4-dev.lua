@@ -458,6 +458,8 @@ return {
             description = "Collection of common files for all projects",
             files = {
               ".github/copilot-instructions.md",
+              "~/.copilot/copilot-instructions.md",
+              "~/.claude/CLAUDE.md",
               "AGENT.md",
               { path = "CLAUDE.md", parser = "claude" },
             },
