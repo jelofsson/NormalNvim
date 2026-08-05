@@ -477,6 +477,15 @@ return {
           },
         },
         adapters = {
+          acp = {
+            claude_code = function()
+              return require("codecompanion.adapters").extend("claude_code", {
+                env = {
+                  ANTHROPIC_API_KEY = vim.env.ANTHROPIC_API_KEY,
+                },
+              })
+            end,
+          },
           http = {
             opts = {
               show_model_choices = true,
