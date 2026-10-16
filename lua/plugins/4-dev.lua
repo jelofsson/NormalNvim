@@ -441,13 +441,14 @@ return {
   -- [CodeCompanion AI]
   -- https://codecompanion.olimorris.dev
   {
-    "jelofsson/codecompanion.nvim",
+    "olimorris/codecompanion.nvim",
     cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
     opts = {},
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/codecompanion-history.nvim",
+      "cairijun/codecompanion-agentskills.nvim",
       {
         "MeanderingProgrammer/render-markdown.nvim", -- Enhanced markdown rendering
         dependencies = {
@@ -478,6 +479,9 @@ return {
         },
         adapters = {
           acp = {
+            opts = {
+              show_presets = false,
+            },
             claude_code = function()
               return require("codecompanion.adapters").extend("claude_code", {
                 env = {
@@ -488,8 +492,31 @@ return {
           },
           http = {
             opts = {
+              show_presets = false,
               show_model_choices = true,
             },
+            ollama = function()
+              return require("codecompanion.adapters").extend("ollama", {
+                schema = {
+                  model = {
+                    default = "gemma4:12b", -- Replace with your exact qwen tag (e.g. qwen3:8b)
+                  },
+                  -- 3. Lower temperature slightly for stricter syntax compliance
+                  temperature = {
+                    default = 0.1,
+                  },
+                  num_ctx = {
+                    default = 128000, -- Set context window to 16k tokens
+                  },
+                },
+                headers = {
+                  ["Content-Type"] = "application/json",
+                },
+                parameters = {
+                  sync = true,
+                },
+              })
+            end,
           },
         },
         groups = {
@@ -606,7 +633,7 @@ return {
               },
               {
                 role = "user",
-                content = "You have access to @{agent} tool to help you perform coding tasks as a Fullstack developer in the project.\n\nUse this tool judiciously to gather information and assist the user effectively.",
+                content = "You have access to @{agent} and @{agent_skills} tool to help you perform coding tasks as a Fullstack developer in the project.\n\nUse this tool judiciously to gather information and assist the user effectively.",
               },
             },
           },
@@ -642,6 +669,13 @@ return {
           },
         },
         extensions = {
+          agentskills = {
+            opts = {
+              paths = {
+                { "~/.agents/skills", recursive = true }, -- Recursive search
+              },
+            },
+          },
           history = {
             enabled = true,
             opts = {
@@ -654,7 +688,7 @@ return {
               save_chat_keymap = {}, -- Use autosave.
               auto_save = true,
               expiration_days = 30,
-              auto_generate_title = true, -- fixed typo
+              auto_generate_title = false, -- fixed typo
               title_generation_opts = vim.tbl_extend(
                 "force",
                 {
@@ -733,7 +767,7 @@ return {
     dir = vim.fn.stdpath("config") .. "/lua/codecompanion-chat-remove",
     name = "codecompanion-chat-remove",
     dependencies = {
-      "jelofsson/codecompanion.nvim",
+      "olimorris/codecompanion.nvim",
       "nvim-telescope/telescope.nvim",
     },
     ft = { "codecompanion" },
