@@ -421,7 +421,7 @@ return {
        null_ls.setup({
           sources = {
             null_ls.builtins.formatting.prettier, -- Prettier for JavaScript/TypeScript
-            null_ls.builtins.formatting.stylua,  -- Stylua for Lua
+null_ls.builtins.formatting.stylua.with({ extra_args = { "--respect-ignores" } }), -- Stylua for Lua, honours .styluaignore
             null_ls.builtins.formatting.csharpier    -- CSharpier for C#
           },
           -- you can reuse a shared lspconfig on_attach callback here
