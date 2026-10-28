@@ -247,6 +247,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
+-- 10b. :W = write without running BufWritePre autocmds (no formatting)
+vim.api.nvim_create_user_command("W", "noautocmd write<bang>", { bang = true, desc = "Write without formatting" })
+
 -- 11. Send yanked text to Wayland clipboard (wl-copy)
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
